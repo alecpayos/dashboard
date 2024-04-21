@@ -1,0 +1,46 @@
+{
+  "name": "dash",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "dev-server": "node src/app/page.tsx",
+    "prod-server": "NODE_ENV=production node src/app/page.tsx",
+    "db:push": "npx prisma db push --schema=./src/db/schema.prisma",
+    "db:seed": "npx prisma db seed --schema=./src/db/schema.prisma",
+    "db:migrate": "npx prisma migrate dev --schema=./src/db/schema.prisma",
+    "studio": "npx prisma studio --schema=./src/db/schema.prisma"
+  },
+  "prisma": {
+    "schema": "src/db/schema.prisma",
+    "seed": "tsx src/db/seed.ts"
+  },
+  "dependencies": {
+    "@nextui-org/react": "^2.3.1",
+    "@prisma/client": "^5.12.1",
+    "framer-motion": "^11.1.2",
+    "next": "14.1.4",
+    "next-auth": "^4.24.7",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.0.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.4",
+    "postcss": "^8",
+    "prisma": "^5.12.1",
+    "tailwindcss": "^3.3.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.2",
+    "typescript": "^5"
+  }
+}
