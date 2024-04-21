@@ -1,0 +1,174 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL") // uses connection pooling
+  directUrl = env("DATABASE_URL") // uses a direct connection
+}
+
+model User {
+  id               String     @default(cuid()) @id
+  office           Office[]
+  scans            Scan[]
+  medias           Media[]
+  scansDismissed   ScanDismissStatus[]
+  type             String
+  username         String
+  firstName        String
+  lastName         String
+  email            String     @unique
+  password         String 
+  countryCode      Int
+  phoneNumber      BigInt
+  birthDate        DateTime
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @default(now())
+  @@map(name: "users")
+}
+
+model Office {
+  id                     String                  @default(cuid())  @id
+  users                  User[]
+  scans                  Scan[]
+  activeState            Int                     @db.SmallInt
+  onboardStatus          Boolean                 @default(false)
+  name                   String
+  addressOne             String
+  addressTwo             String?
+  city                   String
+  state                  String
+  zipcode                Int
+  phoneNumber            BigInt
+  notes                  String
+  mdPricePerScan         Int                     @db.SmallInt
+  omrPricePerScan        Int                     @db.SmallInt
+  reportCredits          Int                     @db.SmallInt
+  cancelledAt            DateTime?
+  statusChangeReason     String?
+  scanAcquisitionStyle   Int                     @db.SmallInt
+  syncSettings           OfficeSync?
+  acquisitionMachine     OfficeMachine?          
+  smartDismissSettings   SmartDismissSettings?   
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @default(now())
+  @@map(name: "offices")
+}
+
+model OfficeSync {
+  id                    String      @default(cuid())  @id
+  officeId              String      @unique
+  office                Office      @relation(fields: [officeId], references: [id])
+  syncVersion           String?
+  syncWatchDirectory    String?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @default(now())
+  @@map(name: "officeSyncSettings")
+}
+
+model OfficeMachine {
+  id                    String      @default(cuid())  @id
+  officeId              String      @unique
+  office                Office      @relation(fields: [officeId], references: [id])
+  managementSoftware    String?
+  cbctModel             String?
+  viewingSoftware       String?
+  desktopHostname       String?
+  desktopMacAddress     String?
+  desktopRemoteAccess   String?
+  desktopLastAccessed   DateTime?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @default(now())
+  @@map(name: "officeMachines")
+}
+
+model SmartDismissSettings {
+  id                    String      @default(cuid())  @id
+  officeId              String      @unique
+  office                Office      @relation(fields: [officeId], references: [id])
+  modalities            String      @map(name: "modalities")
+  officeCalibration     Boolean     @default(false)
+  blurryScans           Boolean     @default(false)
+  companyCalibration    Boolean     @default(false)
+  ageRestrictions       Int         @db.SmallInt
+  postOp                Int         @db.SmallInt
+  fovRestrictions       Int         @db.SmallInt
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @default(now())
+  @@map(name: "officeSmartDismissSettings")
+}
+
+model Media {
+  id          String      @default(cuid()) @id
+  userId      String
+  scanId      String      @unique
+  user        User?       @relation(fields: [userId], references: [id])
+  scan        Scan?       @relation(fields: [scanId], references: [id])
+  path        String
+  meta        String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now())
+  @@map(name: "medias")
+}
+
+model Scan {
+  id                      String              @default(cuid()) @id
+  office                  Office              @relation(fields: [officeId], references: [id])
+  officeId                String
+  users                   User[]
+  media                   Media?
+  studyType               String?
+  viewerLink              String?
+  status                  String?
+  isInHouse               Boolean?            @default(false)
+  viewerPlatform          String?
+  dismissId               String?             @unique
+  dismissStatus           ScanDismissStatus?  @relation(fields: [dismissId], references: [id])
+  scanSource              String?
+  reportImages            String?
+  notes                   String?
+  omrAssignedAt           DateTime?           @default(now())
+  radiologistAssignedAt   DateTime?           @default(now())
+  timezone                String?
+  radiologyReportType     String?
+  isOmrReportRequested    Boolean?
+  skippedUntil            DateTime?
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @default(now())
+  @@map(name: "scans")
+}
+
+model ScanDismissStatus {
+  id              String     @default(cuid()) @id
+  scan            Scan?
+  dismissBy       String
+  dismissUser     User?      @relation(fields: [dismissBy], references: [id])
+  dismissReason   String?
+  dismissAt       DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @default(now())
+}
+
+model Report {
+  id        String      @default(cuid()) @id
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now())
+  @@map(name: "reports")
+}
+
+model ItemizedBill {
+  id        String      @default(cuid()) @id
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now())
+  @@map(name: "itemizedBills")
+}
+
+model Documentation {
+  id        String      @default(cuid()) @id
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now())
+  @@map(name: "documentation")
+}
