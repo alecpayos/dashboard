@@ -90,7 +90,6 @@ body {
   }
 
   .sidebar {
-    box-shadow: 8px 0 8px 2px rgb(244 244 245);
     -webkit-transition: width 0.6s;
     transition: width 0.6s;
 
@@ -99,7 +98,7 @@ body {
       flex
       flex-col
       font-[500]
-      rounded-[28px]
+      rounded-r-[28px]
       text-zinc-500
   }
 
@@ -112,13 +111,22 @@ body {
       hover:bg-slate-100
   }
 
-  .accordion-sub-item {
+  .sidebar-item {
     @apply
-     text-sm
-     p-2
-     rounded-md
-     w-full
-     text-nowrap
-     hover:bg-sky-100
+      flex
+      mx-4
+      py-4
+      px-4
+      text-sm
+      rounded-md
+      text-nowrap
+      text-zinc-500
+      hover:bg-sky-50
+  }
+
+  .wrapper {
+    @apply
+      py-8
+      px-16
   }
 }

@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   description: "Sample dashboard from previous work, ported to NextJs",
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,7 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} flex bg-white`}>
         <Sidebar />
-        {children}
+
+        <main className="h-screen">
+          {children}
+        </main>
       </body>
     </html>
   );

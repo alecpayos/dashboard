@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: 'Login page of sample dashboard cloned from previous work',
 }
 
-export default function Home() {
+export default function Login() {
   return (
     <form className="login-form" action={handleForceLogin}>
       <section className="login-form-content">
@@ -42,7 +42,7 @@ export default function Home() {
           <button type="button"><BsGithub className="w-[40px] h-[40px]" /></button>
         </div>
 
-        <p className="mt-12 self-center text-xs">Don"t have an account yet?</p>
+        <p className="mt-12 self-center text-xs">Don't have an account yet?</p>
         <button type="button" className="text-sm mt-3 py-2 px-4 w-1/2 self-center rounded-full hover:bg-gray-200">SIGN UP</button>
 
       </section>
