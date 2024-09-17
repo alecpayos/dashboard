@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { BsHouseDoor, BsUpcScan } from "react-icons/bs"
 import { FaRegUser } from "react-icons/fa"
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2"
@@ -25,15 +26,23 @@ const sidebarLinkItems = [
 ]
 
 const Sidebar = () => {
+  const path = usePathname().replace('/', '');
+
+  if (!path) {
+    return;
+  }
+
   return (
     <aside className="sidebar w-max shadow-small">
       <div className="w-full flex flex-col">
         {sidebarLinkItems.map(({ name, link, icon }, index) => {
+          const active = path == name.toLocaleLowerCase() ? 'sidebar-active' : '';
+
           return (
             <Link 
               key={index}
               href={link}
-              className="sidebar-item"
+              className={`sidebar-item ${active}`}
             >
               <span className="text-[20px] me-4">
                 {icon}

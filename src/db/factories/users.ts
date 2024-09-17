@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { getCreatedOrUpdatedAt } from './utilities';
+import { fisherYatesShuffler, getCreatedOrUpdatedAt } from './utilities';
+import { countryCodeFormats } from '@/api/utilities';
 
 const userTypes = [
   'partner_md_rad',
@@ -12,18 +13,47 @@ const userTypes = [
   'company_admin',
   'company_developer',
   'company_executive',
-]
+];
 
-export const fakeUser = (): any => ({
-  type: faker.helpers.arrayElement(userTypes),
-  username: faker.person.fullName(),
-  firstName: faker.person.firstName(),
-  lastName: faker.person.lastName(),
-  email: faker.internet.email(),
-  password: faker.internet.password(),
-  countryCode: faker.number.int({ min: 1, max: 998 }),
-  phoneNumber: faker.number.int({ min: 582494, max: 238538149023 }),
-  birthDate: faker.date.birthdate(),
-  createdAt: getCreatedOrUpdatedAt(),
-  updatedAt: getCreatedOrUpdatedAt(),
-})
+const statusTypes = [
+  'active',
+  'paused',
+  'offboarded'
+];
+
+export const fakeUser = (): any => {
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+  const specialCharacters = ['_', '-', '!', '@', '#', '$', '%', '^', '&', '*'];
+  const singleSpecialChar = specialCharacters[Math.floor(Math.random() * specialCharacters.length)];
+  const lowerFirstName = firstName.toLowerCase();
+  const lowerLastName = lastName.toLowerCase();
+  const { isoTwo, code, name, format } = faker.helpers.arrayElement(countryCodeFormats);
+  const phoneNumRange = format.replaceAll(' ', '').length;
+  const min = Math.pow(10, phoneNumRange - 1);
+  const max = Math.pow(10, phoneNumRange) - 1;
+
+  const usernameParams = [
+    lowerFirstName,
+    lowerLastName,
+    singleSpecialChar,
+    faker.number.int({ min: 0, max: 9999 })
+  ];
+
+  return {
+    firstName,
+    lastName,
+    status: faker.helpers.arrayElement(statusTypes),
+    type: faker.helpers.arrayElement(userTypes),
+    username: fisherYatesShuffler(usernameParams).join(''),
+    email: faker.internet.email({ firstName, lastName }),
+    password: faker.internet.password(),
+    country: name,
+    countryISO: isoTwo,
+    countryCode: code,
+    phoneNumber: faker.number.int({ min, max }),
+    birthDate: faker.date.birthdate(),
+    createdAt: getCreatedOrUpdatedAt(),
+    updatedAt: getCreatedOrUpdatedAt(),
+  }
+};

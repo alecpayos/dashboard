@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={`${inter.className} flex bg-white`}>
         <Sidebar />
 
-        <main className="h-screen">
+        <main className="h-screen w-full">
           {children}
         </main>
       </body>

@@ -29,3 +29,12 @@ export const getWatchedDirectory = () => {
   const exportDirectory = faker.helpers.arrayElement(exportWords);
   return `${drive}:/${path1}/${path2}/${path3}/${exportDirectory}`;
 }
+
+export const fisherYatesShuffler = (array: (string|number)[]) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
+}

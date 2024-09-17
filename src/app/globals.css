@@ -124,6 +124,10 @@ body {
       hover:bg-sky-50
   }
 
+  .sidebar-active {
+    background-color: #DFF2FF !important;
+  }
+
   .wrapper {
     @apply
       py-8

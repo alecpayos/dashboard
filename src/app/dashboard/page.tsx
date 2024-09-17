@@ -1,6 +1,5 @@
-export default function Dashboard() {
+export default function DashboardPage() {
   return (
-    <div className="wrapper">
-    </div>
+    <div className="wrapper">Dashboard Page</div>
   )
 }

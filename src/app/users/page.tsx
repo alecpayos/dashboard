@@ -1,9 +1,9 @@
-import UsersTable from "../components/UsersTable";
+import CustomDataTable from "../components/UsersTable";
 
-export default function Users() {
+export default async function UsersPage() {
   return (
     <div className="wrapper">
-      <UsersTable />
+      <CustomDataTable />
     </div>
   )
 }
